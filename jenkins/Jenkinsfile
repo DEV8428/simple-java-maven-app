@@ -1,27 +1,41 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB_USER = "manisha417"
+        IMAGE_NAME = "java-maven:v1"
+    }
+
     stages {
-        stage('Checkout'){
+
+        stage('Checkout') {
             steps {
-                git "https://github.com/DEV8428/simple-java-maven-app"
+                git branch: 'master', url: "https://github.com/DEV8428/simple-java-maven-app"
             }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
-                echo 'Hello from build'
+                echo "Building the project..."
+                sh "mvn clean package"
             }
         }
+
         stage('Test') {
-           steps {
-               echo "Testing the code..."
+            steps {
+                echo "Testing the code..."
+            }
         }
-    }
-    stage ('Deploy'){   
-        steps {
-            echo "Deploymet in progress"
+
+        stage('Docker Build') {
+            steps {
+                echo "Building Docker image..."
+                sh """
+                    docker build -t manisha417/java-maven:v1 .
+                    docker rm -f javaimage || true
+                    docker run -d --name javaimage -p 8079:8080 manisha417/java-maven:v1
+                """
+            }
         }
-        
-    }
     }
 }
