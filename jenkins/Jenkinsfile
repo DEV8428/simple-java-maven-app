@@ -33,7 +33,7 @@ pipeline {
                 sh """
                     docker build -t manisha417/java-maven:v1 .
                     docker rm -f javaimage || true
-                    docker run -d --name javaimage -p 8079:8080 manisha417/java-maven:v1
+                    docker run -d --name javaimage -p 8089:8089 manisha417/java-maven:v1
                 """
             }
         }
