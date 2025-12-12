@@ -1,5 +1,2 @@
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY target/*.jar app.jar
-EXPOSE 8089
-CMD ["java","-jar","app.jar"]
+FROM tomee
+COPY /my-app-1.0-SNAPSHOT.jar /usr/local/tomee/webapps/testapp.jar
